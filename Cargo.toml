@@ -1,0 +1,21 @@
+[package]
+name = "gag_combo_gen_web"
+version = "0.1.0"
+authors = ["Jon Doe <agustusfifth@gmail.com>"]
+
+[lib]
+crate-type = ["cdylib"]
+
+[dependencies]
+gag_combo_gen = { path = "../gag_combo_gen", version = "*" }
+lazy_static = "*"
+fnv = "*"
+
+[profile.release]
+opt-level = 3
+debug = false
+rpath = false
+lto = true
+debug-assertions = false
+codegen-units = 1
+panic = "abort"
