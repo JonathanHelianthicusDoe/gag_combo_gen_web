@@ -1,0 +1,19 @@
+{
+    "bitwise": false,
+    "curly": true,
+    "eqeqeq": true,
+    "esversion": 6,
+    "forin": true,
+    "freeze": false,
+    "futurehostile": true,
+    "noarg": true,
+    "nocomma": true,
+    "nonbsp": true,
+    "nonew": true,
+    "singleGroups": true,
+    "strict": false,
+    "varstmt": true,
+    "browser": true,
+    "typed": true,
+    "worker": true
+}

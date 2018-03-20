@@ -4,11 +4,47 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <title>Gag combo generator</title>
-    <!--<link rel="stylesheet" href="css/style.css" type="text/css" />-->
+    <link rel="stylesheet" href="css/style.css" type="text/css" />
     <script type="text/javascript" src="js/main.js" defer></script>
   </head>
 
   <body>
-    <p>test</p>
+    <div id="controls-wrapper">
+      <div id="controls-container">
+        <label>
+          Cog level
+          <input id="cog-level" type="number" min="1" max="12" value="1">
+        </label>
+
+        <label>
+          Lured
+          <input id="lured" type="checkbox">
+        </label>
+
+        <label>
+          v2.0
+          <input id="v2" type="checkbox">
+        </label>
+
+        <label>
+          Number of toons/gags
+          <input id="toons" type="number" min="1" max="4" value="1">
+        </label>
+
+        <label>
+          Number of organic gags
+          <input id="org-count" type="number" min="0" max="4" value="0">
+        </label>
+      </div>
+    </div>
+
+    <div id="gag-imgs-wrapper">
+      <div id="gag-imgs">
+        <div id="gag-img-holder-0" class="gag-img-holder"><img id="gag-img-0" class="hidden" src="" alt="&nbsp;" title=""></div>
+        <div id="gag-img-holder-1" class="gag-img-holder"><img id="gag-img-1" class="hidden" src="" alt="&nbsp;" title=""></div>
+        <div id="gag-img-holder-2" class="gag-img-holder"><img id="gag-img-2" class="hidden" src="" alt="&nbsp;" title=""></div>
+        <div id="gag-img-holder-3" class="gag-img-holder"><img id="gag-img-3" class="hidden" src="" alt="&nbsp;" title=""></div>
+      </div>
+    </div>
   </body>
 </html>

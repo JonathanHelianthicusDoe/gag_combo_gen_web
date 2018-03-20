@@ -1,0 +1,14 @@
+{
+  "name": "gag_combo_gen_web",
+  "version": "0.1.0",
+  "description": "static test server",
+  "main": "index.js",
+  "dependencies": {
+    "express": ">=4.16"
+  },
+  "scripts": {
+    "start": "node index.js"
+  },
+  "author": "Dr. Jonathan Helianthicus Doe, IV",
+  "license": "AGPL-3.0"
+}
