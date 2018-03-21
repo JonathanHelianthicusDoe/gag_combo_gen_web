@@ -34,8 +34,17 @@ function main(r) {
     const v2_elem = document.getElementById("v2");
     const toons_elem = document.getElementById("toons");
     const org_count_elem = document.getElementById("org-count");
-    const elems =
-        [cog_level_elem, lured_elem, v2_elem, toons_elem, org_count_elem];
+
+    const trap_elem = document.getElementById("trap-select");
+    const sound_elem = document.getElementById("sound-select");
+    const throw_elem = document.getElementById("throw-select");
+    const squirt_elem = document.getElementById("squirt-select");
+    const drop_elem = document.getElementById("drop-select");
+
+    const elems = [
+        cog_level_elem, lured_elem, v2_elem,    toons_elem,  org_count_elem,
+        trap_elem,      sound_elem, throw_elem, squirt_elem, drop_elem,
+    ];
 
     const gag_img0 = document.getElementById("gag-img-0");
     const gag_img1 = document.getElementById("gag-img-1");
@@ -50,26 +59,47 @@ function main(r) {
         const toons = +toons_elem.value;
         const org_count = +org_count_elem.value;
 
+        const use_trap = trap_elem.checked;
+        const use_sound = sound_elem.checked;
+        const use_throw = throw_elem.checked;
+        const use_squirt = squirt_elem.checked;
+        const use_drop = drop_elem.checked;
+        const gag_types =
+            [use_trap, use_sound, use_throw, use_squirt, use_drop];
+        const gag_types_mask = gag_types.reduce((m, b, i) => m | b << i, 0);
+
         const combo = translate_combo(
             toons,
-            gag_combo_gen.gen(cog_level, lured, v2, toons, org_count)
+            gag_combo_gen.gen(
+                cog_level,
+                lured,
+                v2,
+                toons,
+                org_count,
+                gag_types_mask
+            )
         );
+
         let i;
         for (i = 0; i < combo.length; ++i) {
             const [gag_img, combo_str] = [gag_imgs[i], combo[i]];
             gag_img.src = `img/${combo_str}.png`;
+
             const rgn = readable_gag_name(combo_str);
             gag_img.alt = rgn;
             gag_img.title = rgn;
+
             if (combo_str.substr(-4) === "_org") {
                 gag_img.classList.add("org");
             } else {
                 gag_img.classList.remove("org");
             }
+
             gag_img.classList.remove("hidden");
         }
         for (; i < 4; ++i) {
             const gag_img = gag_imgs[i];
+
             gag_img.classList.add("hidden");
             gag_img.src = "";
             gag_img.alt = "\u00a0";

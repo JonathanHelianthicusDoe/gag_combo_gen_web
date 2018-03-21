@@ -49,14 +49,14 @@ input[type="number"] {
     filter: contrast(125%); /* brightness(125%) */
 }
 
-#controls-wrapper {
+.controls-wrapper {
     display: flex;
     max-width: 100%;
     width: 100%;
     padding: 1rem;
 }
 
-#controls-container {
+.controls-container {
     display: flex;
     flex-wrap: wrap;
     margin: auto;
