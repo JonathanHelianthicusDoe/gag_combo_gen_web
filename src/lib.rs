@@ -102,7 +102,7 @@ pub extern fn gen(cog_level: i32,
         if g.gag_type == GagType::PassGag {
             true
         } else {
-            gag_types & (1 << g.gag_type.as_u8()) != 0
+            gag_types & 1 << g.gag_type.as_u8() != 0
         }).cloned()
           .collect::<Vec<Gag>>();
     if let Some(combo) = opt_combo(&gags,

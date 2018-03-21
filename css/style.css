@@ -29,6 +29,17 @@ input[type="number"] {
     max-width: 3.5rem;
 }
 
+a {
+    text-decoration: underline;
+    padding: 0.05rem;
+    border: none;
+    color: #234;
+}
+
+a:hover {
+    color: #357;
+}
+
 .sound > td {
     background-color: #3d5deb;
 }
@@ -51,16 +62,14 @@ input[type="number"] {
 
 .controls-wrapper {
     display: flex;
-    max-width: 100%;
     width: 100%;
-    padding: 1rem;
+    padding: 1rem 0 1rem 0;
 }
 
 .controls-container {
     display: flex;
     flex-wrap: wrap;
     margin: auto;
-    max-width: 100%;
 }
 
 #gag-imgs-wrapper {
@@ -76,13 +85,8 @@ input[type="number"] {
 .gag-img-holder {
     display: flex;
     overflow: hidden;
-
-    min-width: 70px;
     width: 70px;
-    max-width: 70px;
-    min-height: 70px;
     height: 70px;
-    max-height: 70px;
 }
 
 .gag-img-holder > img {
@@ -104,4 +108,11 @@ input[type="number"] {
 
 #error-div > * {
     padding: 1rem;
+}
+
+#source-div {
+    position: fixed;
+    right: 6vw;
+    bottom: 5vh;
+    font-size: 1.5rem;
 }
