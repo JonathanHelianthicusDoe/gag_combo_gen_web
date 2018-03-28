@@ -54,10 +54,22 @@ function main(r) {
 
     function update() {
         const cog_level = +cog_level_elem.value;
+        if (cog_level > 12 || cog_level < 1) {
+            cog_level_elem.value = 1;
+            return;
+        }
         const lured = lured_elem.checked;
         const v2 = v2_elem.checked;
         const toons = +toons_elem.value;
+        if (toons > 4 || toons < 1) {
+            toons_elem.value = 1;
+            return;
+        }
         const org_count = +org_count_elem.value;
+        if (org_count > 4 || org_count < 0) {
+            org_count_elem.value = 0;
+            return;
+        }
 
         const use_trap = trap_elem.checked;
         const use_sound = sound_elem.checked;
