@@ -139,9 +139,9 @@ function title_case(s) {
 function readable_gag_name(s) {
     if (s.substr(-4) === "_org") {
         return "Organic " +
-            title_case(s.substr(0, s.length - 4).replace("_", " "));
+            title_case(s.substr(0, s.length - 4).replace(/_/g, " "));
     }
-    return title_case(s.replace("_", " "));
+    return title_case(s.replace(/_/g, " "));
 }
 
 })();
