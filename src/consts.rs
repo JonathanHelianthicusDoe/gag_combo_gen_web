@@ -3,7 +3,6 @@ use gag_combo_gen::gag_types::Gag;
 use gag_combo_gen::gag_types::GagType::{
     DropGag, SoundGag, SquirtGag, ThrowGag, TrapGag,
 };
-use fnv::FnvHashMap as Map;
 
 
 lazy_static! {
@@ -94,52 +93,4 @@ lazy_static! {
         Gag { name: "toontanic",        gag_type: DropGag,   is_org: true,  base_dmg: 198, cost: 7010000 },
         Gag { name: "railroad",         gag_type: TrapGag,   is_org: true,  base_dmg: 214, cost: 7777777 },
     ];
-
-    pub static ref GAG_HASHES: Map<&'static str, u32> = {
-        let mut m = Map::default();
-
-        m.insert("pass",              0);
-
-        m.insert("banana_peel",       1);
-        m.insert("rake",              6);
-        m.insert("marbles",          11);
-        m.insert("quicksand",        16);
-        m.insert("trap_door",        21);
-        m.insert("tnt",              26);
-        m.insert("railroad",         31);
-
-        m.insert("bikehorn",          2);
-        m.insert("whistle",           7);
-        m.insert("bugle",            12);
-        m.insert("aoogah",           17);
-        m.insert("elephant_trunk",   22);
-        m.insert("foghorn",          27);
-        m.insert("opera_singer",     32);
-
-        m.insert("cupcake",           3);
-        m.insert("fruit_pie_slice",   8);
-        m.insert("cream_pie_slice",  13);
-        m.insert("fruit_pie",        18);
-        m.insert("cream_pie",        23);
-        m.insert("cake",             28);
-        m.insert("wedding_cake",     33);
-
-        m.insert("squirting_flower",  4);
-        m.insert("glass_of_water",    9);
-        m.insert("squirtgun",        14);
-        m.insert("seltzer_bottle",   19);
-        m.insert("fire_hose",        24);
-        m.insert("storm_cloud",      29);
-        m.insert("geyser",           34);
-
-        m.insert("flowerpot",         5);
-        m.insert("sandbag",          10);
-        m.insert("anvil",            15);
-        m.insert("big_weight",       20);
-        m.insert("safe",             25);
-        m.insert("grand_piano",      30);
-        m.insert("toontanic",        35);
-
-        m
-    };
 }

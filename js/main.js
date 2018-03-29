@@ -34,6 +34,7 @@ function main(r) {
     const v2_elem = document.getElementById("v2");
     const toons_elem = document.getElementById("toons");
     const org_count_elem = document.getElementById("org-count");
+    const k_elem = document.getElementById("k");
 
     const trap_elem = document.getElementById("trap-select");
     const sound_elem = document.getElementById("sound-select");
@@ -43,14 +44,12 @@ function main(r) {
 
     const elems = [
         cog_level_elem, lured_elem, v2_elem,    toons_elem,  org_count_elem,
+        k_elem,
         trap_elem,      sound_elem, throw_elem, squirt_elem, drop_elem,
     ];
 
-    const gag_img0 = document.getElementById("gag-img-0");
-    const gag_img1 = document.getElementById("gag-img-1");
-    const gag_img2 = document.getElementById("gag-img-2");
-    const gag_img3 = document.getElementById("gag-img-3");
-    const gag_imgs = [gag_img0, gag_img1, gag_img2, gag_img3];
+    const gag_imgs_wrappers =
+        document.getElementsByClassName("gag-imgs-wrapper");
 
     function update() {
         const cog_level = +cog_level_elem.value;
@@ -70,6 +69,11 @@ function main(r) {
             org_count_elem.value = 0;
             return;
         }
+        const k = +k_elem.value;
+        if (k < 1 || k > 10) {
+            k_elem.value = 1;
+            return;
+        }
 
         const use_trap = trap_elem.checked;
         const use_sound = sound_elem.checked;
@@ -80,43 +84,87 @@ function main(r) {
             [use_trap, use_sound, use_throw, use_squirt, use_drop];
         const gag_types_mask = gag_types.reduce((m, b, i) => m | b << i, 0);
 
-        const combo = translate_combo(
+        const combos = gen_combos(
+            k,
+            cog_level,
+            lured,
+            v2,
             toons,
-            gag_combo_gen.gen(
-                cog_level,
-                lured,
-                v2,
-                toons,
-                org_count,
-                gag_types_mask
-            )
+            org_count,
+            gag_types_mask
         );
 
-        let i;
-        for (i = 0; i < combo.length; ++i) {
-            const [gag_img, combo_str] = [gag_imgs[i], combo[i]];
-            gag_img.src = `img/${combo_str}.png`;
-
-            const rgn = readable_gag_name(combo_str);
-            gag_img.alt = rgn;
-            gag_img.title = rgn;
-
-            if (combo_str.substr(-4) === "_org") {
-                gag_img.classList.add("org");
-            } else {
-                gag_img.classList.remove("org");
+        for (let i = 0; i < gag_imgs_wrappers.length; ++i) {
+            const gag_imgs_wrapper = gag_imgs_wrappers[i];
+            if (i >= combos.length) {
+                gag_imgs_wrapper.classList.add("hidden");
+                continue;
             }
+            gag_imgs_wrapper.classList.remove("hidden");
 
-            gag_img.classList.remove("hidden");
-        }
-        for (; i < 4; ++i) {
-            const gag_img = gag_imgs[i];
+            const combo = combos[i];
+            const gag_imgs =
+                gag_imgs_wrapper.getElementsByClassName("gag-img");
 
-            gag_img.classList.add("hidden");
-            gag_img.src = "";
-            gag_img.alt = "\u00a0";
-            gag_img.title = "";
+            let j;
+            for (j = 0; j < combo.length; ++j) {
+                const [gag_img, combo_str] = [gag_imgs[j], combo[j]];
+                gag_img.src = `img/${combo_str}.png`;
+
+                const rgn = readable_gag_name(combo_str);
+                gag_img.alt = rgn;
+                gag_img.title = rgn;
+
+                if (combo_str.substr(-4) === "_org") {
+                    gag_img.classList.add("org");
+                } else {
+                    gag_img.classList.remove("org");
+                }
+
+                gag_img.classList.remove("hidden");
+            }
+            for (; j < 4; ++j) {
+                const gag_img = gag_imgs[j];
+
+                gag_img.classList.add("hidden");
+                gag_img.src = "";
+                gag_img.alt = "\u00a0";
+                gag_img.title = "";
+            }
         }
+    }
+
+    function gen_combos(k,
+                        cog_level,
+                        lured,
+                        v2,
+                        toons,
+                        org_count,
+                        gag_types_mask)
+    {
+        gag_combo_gen.gen(
+            k,
+            cog_level,
+            lured,
+            v2,
+            toons,
+            org_count,
+            gag_types_mask
+        );
+
+        const combo_hashes = [];
+        for (let i = 0; i < k; ++i) {
+            const hash = gag_combo_gen.get(i);
+            if (hash === 0) {
+                break;
+            }
+            combo_hashes.push(hash);
+        }
+        if (combo_hashes.length === 0) {
+            combo_hashes.push(0);
+        }
+
+        return combo_hashes.map(h => translate_combo(toons, h));
     }
 
     for (const elem of elems) {

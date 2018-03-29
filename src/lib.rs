@@ -1,3 +1,7 @@
+#![feature(collection_placement)]
+#![feature(placement_in_syntax)]
+#![feature(inclusive_range_syntax)]
+
 mod consts;
 
 extern crate gag_combo_gen;
@@ -5,22 +9,23 @@ extern crate gag_combo_gen;
 extern crate lazy_static;
 extern crate fnv;
 
-use consts::{DEFAULT_GAGS, GAG_HASHES};
+use consts::DEFAULT_GAGS;
 use fnv::{FnvHashMap as Map, FnvHashSet as Set};
 use gag_combo_gen::gag_types::{Gag, GAG_TYPES, GagType};
-use gag_combo_gen::opt::opt_combo;
+use gag_combo_gen::gags::hash_gag;
+use gag_combo_gen::opt::{k_opt_combos, opt_combo};
 use std::sync::Mutex;
 
 
+type Args = (u8, u8, bool, bool, u8, u8, u8);
+
+
 lazy_static! {
-    static ref CACHE: Mutex<Map<(u8, bool, bool, u8, u8, u8), i32>> =
-        Mutex::new(Map::default());
+    static ref CACHE: Mutex<Map<Args, Vec<i32>>> = Mutex::new(Map::default());
+
+    static ref BEST: Mutex<Vec<i32>> = Mutex::new(Vec::new());
 }
 
-
-fn hash_gag(gag: &Gag) -> u32 {
-    GAG_HASHES[gag.name] + if gag.is_org { 35 } else { 0 }
-}
 
 fn hash_combo(combo: Vec<Gag>) -> (i32, Set<GagType>) {
     let mut hash = 0u32;
@@ -34,27 +39,41 @@ fn hash_combo(combo: Vec<Gag>) -> (i32, Set<GagType>) {
     (hash as i32, type_set)
 }
 
-fn cache_get(key: &(u8, bool, bool, u8, u8, u8)) -> Option<i32> {
+fn best_get(i: usize) -> Option<i32> {
+    match BEST.lock() {
+        Ok(lock) => lock.get(i).cloned(),
+        _        => None,
+    }
+}
+
+fn best_put(new_best: Vec<i32>) {
+    match BEST.lock() {
+        Ok(mut lock) => *lock = new_best,
+        _            => (),
+    }
+}
+
+fn cache_get(key: &Args) -> Option<Vec<i32>> {
     match CACHE.lock() {
         Ok(lock) => match lock.get(key) {
-            Some(&c) => Some(c),
-            _        => None,
+            Some(c) => Some(c.clone()),
+            _       => None,
         },
         _ => None,
     }
 }
 
-fn cache_put(key: (u8, bool, bool, u8, u8, u8), val: i32) {
+fn cache_put(key: Args, val: Vec<i32>) {
     match CACHE.lock() {
         Ok(mut lock) => { lock.insert(key, val); },
         _            => (),
     }
 }
 
-fn cache_put_all(args:        (u8, bool, bool, u8, u8, u8),
-                 gag_types:   i32,
-                 combo_hash:  i32,
-                 combo_types: Set<GagType>)
+fn cache_put_all(args:         Args,
+                 gag_types:    i32,
+                 combo_hashes: &Vec<i32>,
+                 combo_types:  Set<GagType>)
 {
     let combo_types_mask = combo_types.iter()
                                       .fold(0, |m, gt| m | 1 << gt.as_u8());
@@ -73,28 +92,39 @@ fn cache_put_all(args:        (u8, bool, bool, u8, u8, u8),
         }
 
         let mut new_args = args;
-        new_args.5 = gag_type_mask;
-        cache_put(new_args, combo_hash);
+        for k in 1..=args.0 {
+            new_args.0 = k;
+            new_args.5 = gag_type_mask;
+            cache_put(new_args, combo_hashes.clone());
+        }
     }
 }
 
 #[no_mangle]
-pub extern fn gen(cog_level: i32,
+pub extern fn get(i: i32) -> i32 {
+    best_get(i as usize).unwrap_or(0)
+}
+
+#[no_mangle]
+pub extern fn gen(k:         i32,
+                  cog_level: i32,
                   is_lured:  i32,
                   is_v2:     i32,
                   gag_count: i32,
                   org_count: i32,
-                  gag_types: i32) -> i32
+                  gag_types: i32)
 {
-    let args = (cog_level as u8,
+    let args = (k as u8,
+                cog_level as u8,
                 is_lured != 0,
                 is_v2 != 0,
                 gag_count as u8,
                 org_count as u8,
                 gag_types as u8);
 
-    if let Some(combo_hash) = cache_get(&args) {
-        return combo_hash;
+    if let Some(combo_hashes) = cache_get(&args) {
+        best_put(combo_hashes);
+        return;
     }
 
     let gags = DEFAULT_GAGS.iter()
@@ -105,20 +135,36 @@ pub extern fn gen(cog_level: i32,
             gag_types & 1 << g.gag_type.as_u8() != 0
         }).cloned()
           .collect::<Vec<Gag>>();
-    if let Some(combo) = opt_combo(&gags,
-                                   args.0,
-                                   args.1,
-                                   args.2,
-                                   args.3,
-                                   args.4)
-    {
-        let (combo_hash, combo_types) = hash_combo(combo);
-        cache_put_all(args, gag_types, combo_hash, combo_types);
-
-        combo_hash
+    let (combo_hashes, combo_types) = if k == 1 {
+        if let Some(combo) = opt_combo(&gags,
+                                       args.1,
+                                       args.2,
+                                       args.3,
+                                       args.4,
+                                       args.5)
+        {
+            let (combo_hash, combo_types) = hash_combo(combo);
+            (vec![combo_hash], combo_types)
+        } else {
+            (Vec::new(), Set::default())
+        }
     } else {
-        cache_put_all(args, gag_types, 0, Set::default());
+        k_opt_combos(args.0,
+                     &gags,
+                     args.1,
+                     args.2,
+                     args.3,
+                     args.4,
+                     args.5).into_iter()
+                            .fold((Vec::with_capacity(k as usize),
+                                   Set::default()),
+                                  |(mut h, t), c| {
+                                      let (c_h, c_t) = hash_combo(c);
+                                      h.place_back() <- c_h;
+                                      (h, &t | &c_t)
+                                  })
+    };
 
-        0
-    }
+    cache_put_all(args, gag_types, &combo_hashes, combo_types);
+    best_put(combo_hashes);
 }
