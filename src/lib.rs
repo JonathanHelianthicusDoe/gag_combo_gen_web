@@ -160,7 +160,7 @@ pub extern fn gen(k:         i32,
                                    Set::default()),
                                   |(mut h, t), c| {
                                       let (c_h, c_t) = hash_combo(c);
-                                      h.place_back() <- c_h;
+                                      h.push(c_h);
                                       (h, &t | &c_t)
                                   })
     };
