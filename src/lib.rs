@@ -1,16 +1,12 @@
-#![feature(collection_placement)]
-#![feature(placement_in_syntax)]
-#![feature(inclusive_range_syntax)]
-
 mod consts;
 
 extern crate gag_combo_gen;
+extern crate hashbrown;
 #[macro_use]
 extern crate lazy_static;
-extern crate fnv;
 
 use consts::DEFAULT_GAGS;
-use fnv::{FnvHashMap as Map, FnvHashSet as Set};
+use hashbrown::{HashMap as Map, HashSet as Set};
 use gag_combo_gen::gag_types::{Gag, GAG_TYPES, GagType};
 use gag_combo_gen::gags::hash_gag;
 use gag_combo_gen::opt::{k_opt_combos, opt_combo};
