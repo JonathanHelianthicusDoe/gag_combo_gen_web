@@ -17,7 +17,7 @@ crate-type = ["cdylib"]
 [dependencies]
 fxhash = "0.2.1"
 gag_combo_gen = { path = "../gag_combo_gen" }
-lazy_static = "1.3.0"
+lazy_static = "1.4.0"
 
 [profile.release]
 opt-level = 3
