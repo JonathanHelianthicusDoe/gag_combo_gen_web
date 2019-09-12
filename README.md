@@ -1,5 +1,8 @@
 # gag\_combo\_gen\_web
 
+[![AGPL v3+](https://img.shields.io/badge/license-GNU%20AGPL%20v3.0%2B-663366)](./LICENSE)
+[![unsafe forbidden](https://img.shields.io/badge/unsafe-forbidden-success.svg)](https://github.com/rust-secure-code/safety-dance/)
+
 The front-end implementation of the gag combo generator found
 [here](https://zz.nfshost.com/). For the inner library part, see
 [gag\_combo\_gen](https://github.com/JonathanHelianthicusDoe/gag_combo_gen).

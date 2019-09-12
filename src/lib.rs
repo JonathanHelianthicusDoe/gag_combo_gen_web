@@ -1,9 +1,7 @@
-mod consts;
+#![forbid(unsafe_code)]
+#![deny(clippy::all)]
 
-extern crate fxhash;
-extern crate gag_combo_gen;
-#[macro_use]
-extern crate lazy_static;
+mod consts;
 
 use consts::DEFAULT_GAGS;
 use fxhash::{FxHashMap as Map, FxHashSet as Set};
@@ -12,6 +10,7 @@ use gag_combo_gen::{
     gags::hash_gag,
     opt::{k_opt_combos, opt_combo},
 };
+use lazy_static::lazy_static;
 use std::sync::Mutex;
 
 type Args = (u8, u8, bool, bool, u8, u8, u8);
@@ -41,15 +40,14 @@ fn best_get(i: usize) -> Option<i32> {
 }
 
 fn best_put(new_best: Vec<i32>) {
-    match BEST.lock() {
-        Ok(mut lock) => *lock = new_best,
-        _ => (),
+    if let Ok(mut lock) = BEST.lock() {
+        *lock = new_best
     }
 }
 
-fn cache_get(key: &Args) -> Option<Vec<i32>> {
+fn cache_get(key: Args) -> Option<Vec<i32>> {
     match CACHE.lock() {
-        Ok(lock) => match lock.get(key) {
+        Ok(lock) => match lock.get(&key) {
             Some(c) => Some(c.clone()),
             _ => None,
         },
@@ -58,25 +56,29 @@ fn cache_get(key: &Args) -> Option<Vec<i32>> {
 }
 
 fn cache_put(key: Args, val: Vec<i32>) {
-    match CACHE.lock() {
-        Ok(mut lock) => {
-            lock.insert(key, val);
-        },
-        _ => (),
+    if let Ok(mut lock) = CACHE.lock() {
+        lock.insert(key, val);
     }
 }
 
 fn cache_put_all(
     args: Args,
     gag_types: i32,
-    combo_hashes: &Vec<i32>,
+    combo_hashes: &[i32],
     combo_types: Set<GagType>,
 ) {
-    let combo_types_mask =
-        combo_types.iter().fold(0, |m, gt| m | 1 << gt.as_u8());
+    let combo_types_mask = combo_types.iter().fold(0, |m, &gt| {
+        let n: u8 = gt.into();
+
+        m | 1 << n
+    });
     let asked_types = GAG_TYPES
-        .into_iter()
-        .filter(|gt| gag_types & 1 << gt.as_u8() != 0)
+        .iter()
+        .filter(|&&gt| {
+            let n: u8 = gt.into();
+
+            gag_types & 1 << n != 0
+        })
         .cloned()
         .collect::<Set<GagType>>();
     let unused_types = (&asked_types - &combo_types)
@@ -84,9 +86,10 @@ fn cache_put_all(
         .collect::<Vec<GagType>>();
     for bs in 0..1 << unused_types.len() {
         let mut gag_type_mask = combo_types_mask;
-        for (i, gt) in unused_types.iter().enumerate() {
+        for (i, &gt) in unused_types.iter().enumerate() {
             if bs & 1 << i != 0 {
-                gag_type_mask |= 1 << gt.as_u8();
+                let n: u8 = gt.into();
+                gag_type_mask |= 1 << n;
             }
         }
 
@@ -94,7 +97,7 @@ fn cache_put_all(
         for k in 1..=args.0 {
             new_args.0 = k;
             new_args.5 = gag_type_mask;
-            cache_put(new_args, combo_hashes.clone());
+            cache_put(new_args, combo_hashes.to_owned());
         }
     }
 }
@@ -124,7 +127,7 @@ pub extern "C" fn gen(
         gag_types as u8,
     );
 
-    if let Some(combo_hashes) = cache_get(&args) {
+    if let Some(combo_hashes) = cache_get(args) {
         best_put(combo_hashes);
 
         return;
@@ -136,7 +139,9 @@ pub extern "C" fn gen(
             if g.gag_type == GagType::PassGag {
                 true
             } else {
-                gag_types & 1 << g.gag_type.as_u8() != 0
+                let n: u8 = g.gag_type.into();
+
+                args.6 & 1 << n != 0
             }
         })
         .cloned()
@@ -159,6 +164,7 @@ pub extern "C" fn gen(
                 |(mut h, t), c| {
                     let (c_h, c_t) = hash_combo(c);
                     h.push(c_h);
+
                     (h, &t | &c_t)
                 },
             )

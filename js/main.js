@@ -1,16 +1,41 @@
-(function() {
+/*
+ * @licstart  The following is the entire license notice for the JavaScript
+ * code in this page.
+ *
+ * This file is part of gag_combo_gen.
+ *
+ * gag_combo_gen is free software: you can redistribute it and/or modify it
+ * under the terms of the GNU Affero General Public License as published by the
+ * Free Software Foundation, either version 3 of the License, or (at your
+ * option) any later version.
+ *
+ * gag_combo_gen is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+ * FITNESS FOR A PARTICULAR PURPOSE.  See the GNU Affero General Public License
+ * for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License
+ * along with gag_combo_gen.  If not, see <https://www.gnu.org/licenses/>.
+ *
+ * @licend  The above is the entire license notice for the JavaScript code in
+ * this page.
+ */
+
 "use strict";
 
+/* eslint-disable indent */
 const GAG_NAMES = [
     "pass",
+  /* trap           sound             throw              squirt              drop */
     "banana_peel", "bikehorn",       "cupcake",         "squirting_flower", "flowerpot",
     "rake",        "whistle",        "fruit_pie_slice", "glass_of_water",   "sandbag",
     "marbles",     "bugle",          "cream_pie_slice", "squirtgun",        "anvil",
     "quicksand",   "aoogah",         "fruit_pie",       "seltzer_bottle",   "big_weight",
     "trap_door",   "elephant_trunk", "cream_pie",       "fire_hose",        "safe",
     "tnt",         "foghorn",        "cake",            "storm_cloud",      "grand_piano",
-    "railroad",    "opera_singer",   "wedding_cake",    "geyser",           "toontanic"
+    "railroad",    "opera_singer",   "wedding_cake",    "geyser",           "toontanic",
 ];
+/* eslint-enable indent */
 
 window.onload = function() {
     WebAssembly.instantiateStreaming(fetch("wasm/gag_combo_gen_web.wasm"))
@@ -55,6 +80,7 @@ function main(r) {
         const cog_level = +cog_level_elem.value;
         if (cog_level > 12 || cog_level < 1) {
             cog_level_elem.value = 1;
+
             return;
         }
         const lured = lured_elem.checked;
@@ -62,16 +88,19 @@ function main(r) {
         const toons = +toons_elem.value;
         if (toons > 4 || toons < 1) {
             toons_elem.value = 1;
+
             return;
         }
         const org_count = +org_count_elem.value;
         if (org_count > 4 || org_count < 0) {
             org_count_elem.value = 0;
+
             return;
         }
         const k = +k_elem.value;
         if (k < 1 || k > 10) {
             k_elem.value = 1;
+
             return;
         }
 
@@ -98,6 +127,7 @@ function main(r) {
             const gag_imgs_wrapper = gag_imgs_wrappers[i];
             if (i >= combos.length) {
                 gag_imgs_wrapper.classList.add("hidden");
+
                 continue;
             }
             gag_imgs_wrapper.classList.remove("hidden");
@@ -134,14 +164,15 @@ function main(r) {
         }
     }
 
-    function gen_combos(k,
-                        cog_level,
-                        lured,
-                        v2,
-                        toons,
-                        org_count,
-                        gag_types_mask)
-    {
+    function gen_combos(
+        k,
+        cog_level,
+        lured,
+        v2,
+        toons,
+        org_count,
+        gag_types_mask,
+    ) {
         gag_combo_gen.gen(
             k,
             cog_level,
@@ -149,7 +180,7 @@ function main(r) {
             v2,
             toons,
             org_count,
-            gag_types_mask
+            gag_types_mask,
         );
 
         const combo_hashes = [];
@@ -192,7 +223,7 @@ function translate_combo(gag_count, gen_result) {
 function title_case(s) {
     return s.replace(
         /\w\S*/g,
-        txt => txt.charAt(0).toUpperCase() + txt.substr(1)
+        txt => txt.charAt(0).toUpperCase() + txt.substr(1),
     );
 }
 
@@ -201,7 +232,6 @@ function readable_gag_name(s) {
         return "Organic " +
             title_case(s.substr(0, s.length - 4).replace(/_/g, " "));
     }
+
     return title_case(s.replace(/_/g, " "));
 }
-
-})();

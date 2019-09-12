@@ -3,5 +3,9 @@
 **/*.rs.bk
 Cargo.lock
 
+# Text editor stuff
+.vscode/
+*.swp
+
 # Other stuff
 /img/.batch
