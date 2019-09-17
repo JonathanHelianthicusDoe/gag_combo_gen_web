@@ -13,7 +13,10 @@ The front-end implementation of the gag combo generator found
 git clone https://github.com/JonathanHelianthicusDoe/gag_combo_gen.git
 git clone https://github.com/JonathanHelianthicusDoe/gag_combo_gen_web.git
 cd gag_combo_gen_web
-make # Optional, the wasm binary is committed
+./build.sh # Optional; the wasm binary is committed.
+           # You can pass -s as an argument to optimize for size with wasm-opt,
+           # but in that case you probably also want to set opt-level="z" in
+           # the Cargo.toml beforehand.
 cd test
 npm install
 npm start &
