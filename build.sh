@@ -14,5 +14,5 @@ else
     wasm-opt -O4 --strip-debug -o ./wasm/gag_combo_gen_web.wasm ./wasm/gag_combo_gen_web.wasm
 fi
 
-eslint -c ./js/.eslintrc.json --ignore-path ./js/.eslintignore ./js
-eslint -c ./test/.eslintrc.json --ignore-path ./test/.eslintignore ./test
+npx eslint -c ./js/.eslintrc.json --ignore-path ./js/.eslintignore ./js
+npx eslint -c ./test/.eslintrc.json --ignore-path ./test/.eslintignore ./test

@@ -3,6 +3,10 @@
 **/*.rs.bk
 Cargo.lock
 
+# npm stuff
+node_modules/
+package-lock.json
+
 # Text editor stuff
 .vscode/
 *.swp
