@@ -1,12 +1,16 @@
 <!DOCTYPE html>
 <html dir="ltr" lang="en">
   <head>
-    <meta charset="UTF-8">
-    <title>Gag combo generator</title>
-    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta charset="UTF-8" />
+    <title>
+      gag combo generator &ndash; Dr. Jonathan Helianthicus Doe, IV (website
+      of)
+    </title>
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
 
     <link rel="stylesheet" href="css/style.css" type="text/css" />
     <script type="text/javascript" src="js/main.js" defer></script>
+    <link rel="icon" type="image/png" href="../img/original/favicon.png" />
   </head>
 
   <body>
@@ -14,32 +18,32 @@
       <div id="main-controls-container" class="controls-container">
         <label>
           Cog level
-          <input id="cog-level" type="number" min="1" max="12" value="1">
+          <input id="cog-level" type="number" min="1" max="12" value="1" />
         </label>
 
         <label>
           Lured
-          <input id="lured" type="checkbox">
+          <input id="lured" type="checkbox" />
         </label>
 
         <label>
           v2.0
-          <input id="v2" type="checkbox">
+          <input id="v2" type="checkbox" />
         </label>
 
         <label>
           Number of toons/gags
-          <input id="toons" type="number" min="1" max="4" value="1">
+          <input id="toons" type="number" min="1" max="4" value="1" />
         </label>
 
         <label>
           Number of organic gags
-          <input id="org-count" type="number" min="0" max="4" value="0">
+          <input id="org-count" type="number" min="0" max="4" value="0" />
         </label>
 
         <label>
           Generate top
-          <input id="k" type="number" min="1" max="10" value="1">
+          <input id="k" type="number" min="1" max="10" value="1" />
         </label>
       </div>
     </div>
@@ -48,132 +52,232 @@
       <div id="gag-types-container" class="controls-container">
         <label>
           Trap gags
-          <input id="trap-select" type="checkbox">
+          <input id="trap-select" type="checkbox" />
         </label>
 
         <label>
           Sound gags
-          <input id="sound-select" type="checkbox">
+          <input id="sound-select" type="checkbox" />
         </label>
 
         <label>
           Throw gags
-          <input id="throw-select" type="checkbox">
+          <input id="throw-select" type="checkbox" />
         </label>
 
         <label>
           Squirt gags
-          <input id="squirt-select" type="checkbox">
+          <input id="squirt-select" type="checkbox" />
         </label>
 
         <label>
           Drop gags
-          <input id="drop-select" type="checkbox">
+          <input id="drop-select" type="checkbox" />
         </label>
       </div>
     </div>
 
     <div class="gag-imgs-wrapper">
       <div class="gag-imgs">
-        <div class="gag-img-holder"><img class="gag-img hidden" src="" alt="&nbsp;" title=""></div>
-        <div class="gag-img-holder"><img class="gag-img hidden" src="" alt="&nbsp;" title=""></div>
-        <div class="gag-img-holder"><img class="gag-img hidden" src="" alt="&nbsp;" title=""></div>
-        <div class="gag-img-holder"><img class="gag-img hidden" src="" alt="&nbsp;" title=""></div>
+        <div class="gag-img-holder">
+          <img class="gag-img hidden" src="" alt="&nbsp;" title="" />
+        </div>
+        <div class="gag-img-holder">
+          <img class="gag-img hidden" src="" alt="&nbsp;" title="" />
+        </div>
+        <div class="gag-img-holder">
+          <img class="gag-img hidden" src="" alt="&nbsp;" title="" />
+        </div>
+        <div class="gag-img-holder">
+          <img class="gag-img hidden" src="" alt="&nbsp;" title="" />
+        </div>
       </div>
     </div>
 
     <div class="gag-imgs-wrapper hidden">
       <div class="gag-imgs">
-        <div class="gag-img-holder"><img class="gag-img hidden" src="" alt="&nbsp;" title=""></div>
-        <div class="gag-img-holder"><img class="gag-img hidden" src="" alt="&nbsp;" title=""></div>
-        <div class="gag-img-holder"><img class="gag-img hidden" src="" alt="&nbsp;" title=""></div>
-        <div class="gag-img-holder"><img class="gag-img hidden" src="" alt="&nbsp;" title=""></div>
+        <div class="gag-img-holder">
+          <img class="gag-img hidden" src="" alt="&nbsp;" title="" />
+        </div>
+        <div class="gag-img-holder">
+          <img class="gag-img hidden" src="" alt="&nbsp;" title="" />
+        </div>
+        <div class="gag-img-holder">
+          <img class="gag-img hidden" src="" alt="&nbsp;" title="" />
+        </div>
+        <div class="gag-img-holder">
+          <img class="gag-img hidden" src="" alt="&nbsp;" title="" />
+        </div>
       </div>
     </div>
 
     <div class="gag-imgs-wrapper hidden">
       <div class="gag-imgs">
-        <div class="gag-img-holder"><img class="gag-img hidden" src="" alt="&nbsp;" title=""></div>
-        <div class="gag-img-holder"><img class="gag-img hidden" src="" alt="&nbsp;" title=""></div>
-        <div class="gag-img-holder"><img class="gag-img hidden" src="" alt="&nbsp;" title=""></div>
-        <div class="gag-img-holder"><img class="gag-img hidden" src="" alt="&nbsp;" title=""></div>
+        <div class="gag-img-holder">
+          <img class="gag-img hidden" src="" alt="&nbsp;" title="" />
+        </div>
+        <div class="gag-img-holder">
+          <img class="gag-img hidden" src="" alt="&nbsp;" title="" />
+        </div>
+        <div class="gag-img-holder">
+          <img class="gag-img hidden" src="" alt="&nbsp;" title="" />
+        </div>
+        <div class="gag-img-holder">
+          <img class="gag-img hidden" src="" alt="&nbsp;" title="" />
+        </div>
       </div>
     </div>
 
     <div class="gag-imgs-wrapper hidden">
       <div class="gag-imgs">
-        <div class="gag-img-holder"><img class="gag-img hidden" src="" alt="&nbsp;" title=""></div>
-        <div class="gag-img-holder"><img class="gag-img hidden" src="" alt="&nbsp;" title=""></div>
-        <div class="gag-img-holder"><img class="gag-img hidden" src="" alt="&nbsp;" title=""></div>
-        <div class="gag-img-holder"><img class="gag-img hidden" src="" alt="&nbsp;" title=""></div>
+        <div class="gag-img-holder">
+          <img class="gag-img hidden" src="" alt="&nbsp;" title="" />
+        </div>
+        <div class="gag-img-holder">
+          <img class="gag-img hidden" src="" alt="&nbsp;" title="" />
+        </div>
+        <div class="gag-img-holder">
+          <img class="gag-img hidden" src="" alt="&nbsp;" title="" />
+        </div>
+        <div class="gag-img-holder">
+          <img class="gag-img hidden" src="" alt="&nbsp;" title="" />
+        </div>
       </div>
     </div>
 
     <div class="gag-imgs-wrapper hidden">
       <div class="gag-imgs">
-        <div class="gag-img-holder"><img class="gag-img hidden" src="" alt="&nbsp;" title=""></div>
-        <div class="gag-img-holder"><img class="gag-img hidden" src="" alt="&nbsp;" title=""></div>
-        <div class="gag-img-holder"><img class="gag-img hidden" src="" alt="&nbsp;" title=""></div>
-        <div class="gag-img-holder"><img class="gag-img hidden" src="" alt="&nbsp;" title=""></div>
+        <div class="gag-img-holder">
+          <img class="gag-img hidden" src="" alt="&nbsp;" title="" />
+        </div>
+        <div class="gag-img-holder">
+          <img class="gag-img hidden" src="" alt="&nbsp;" title="" />
+        </div>
+        <div class="gag-img-holder">
+          <img class="gag-img hidden" src="" alt="&nbsp;" title="" />
+        </div>
+        <div class="gag-img-holder">
+          <img class="gag-img hidden" src="" alt="&nbsp;" title="" />
+        </div>
       </div>
     </div>
 
     <div class="gag-imgs-wrapper hidden">
       <div class="gag-imgs">
-        <div class="gag-img-holder"><img class="gag-img hidden" src="" alt="&nbsp;" title=""></div>
-        <div class="gag-img-holder"><img class="gag-img hidden" src="" alt="&nbsp;" title=""></div>
-        <div class="gag-img-holder"><img class="gag-img hidden" src="" alt="&nbsp;" title=""></div>
-        <div class="gag-img-holder"><img class="gag-img hidden" src="" alt="&nbsp;" title=""></div>
+        <div class="gag-img-holder">
+          <img class="gag-img hidden" src="" alt="&nbsp;" title="" />
+        </div>
+        <div class="gag-img-holder">
+          <img class="gag-img hidden" src="" alt="&nbsp;" title="" />
+        </div>
+        <div class="gag-img-holder">
+          <img class="gag-img hidden" src="" alt="&nbsp;" title="" />
+        </div>
+        <div class="gag-img-holder">
+          <img class="gag-img hidden" src="" alt="&nbsp;" title="" />
+        </div>
       </div>
     </div>
 
     <div class="gag-imgs-wrapper hidden">
       <div class="gag-imgs">
-        <div class="gag-img-holder"><img class="gag-img hidden" src="" alt="&nbsp;" title=""></div>
-        <div class="gag-img-holder"><img class="gag-img hidden" src="" alt="&nbsp;" title=""></div>
-        <div class="gag-img-holder"><img class="gag-img hidden" src="" alt="&nbsp;" title=""></div>
-        <div class="gag-img-holder"><img class="gag-img hidden" src="" alt="&nbsp;" title=""></div>
+        <div class="gag-img-holder">
+          <img class="gag-img hidden" src="" alt="&nbsp;" title="" />
+        </div>
+        <div class="gag-img-holder">
+          <img class="gag-img hidden" src="" alt="&nbsp;" title="" />
+        </div>
+        <div class="gag-img-holder">
+          <img class="gag-img hidden" src="" alt="&nbsp;" title="" />
+        </div>
+        <div class="gag-img-holder">
+          <img class="gag-img hidden" src="" alt="&nbsp;" title="" />
+        </div>
       </div>
     </div>
 
     <div class="gag-imgs-wrapper hidden">
       <div class="gag-imgs">
-        <div class="gag-img-holder"><img class="gag-img hidden" src="" alt="&nbsp;" title=""></div>
-        <div class="gag-img-holder"><img class="gag-img hidden" src="" alt="&nbsp;" title=""></div>
-        <div class="gag-img-holder"><img class="gag-img hidden" src="" alt="&nbsp;" title=""></div>
-        <div class="gag-img-holder"><img class="gag-img hidden" src="" alt="&nbsp;" title=""></div>
+        <div class="gag-img-holder">
+          <img class="gag-img hidden" src="" alt="&nbsp;" title="" />
+        </div>
+        <div class="gag-img-holder">
+          <img class="gag-img hidden" src="" alt="&nbsp;" title="" />
+        </div>
+        <div class="gag-img-holder">
+          <img class="gag-img hidden" src="" alt="&nbsp;" title="" />
+        </div>
+        <div class="gag-img-holder">
+          <img class="gag-img hidden" src="" alt="&nbsp;" title="" />
+        </div>
       </div>
     </div>
 
     <div class="gag-imgs-wrapper hidden">
       <div class="gag-imgs">
-        <div class="gag-img-holder"><img class="gag-img hidden" src="" alt="&nbsp;" title=""></div>
-        <div class="gag-img-holder"><img class="gag-img hidden" src="" alt="&nbsp;" title=""></div>
-        <div class="gag-img-holder"><img class="gag-img hidden" src="" alt="&nbsp;" title=""></div>
-        <div class="gag-img-holder"><img class="gag-img hidden" src="" alt="&nbsp;" title=""></div>
+        <div class="gag-img-holder">
+          <img class="gag-img hidden" src="" alt="&nbsp;" title="" />
+        </div>
+        <div class="gag-img-holder">
+          <img class="gag-img hidden" src="" alt="&nbsp;" title="" />
+        </div>
+        <div class="gag-img-holder">
+          <img class="gag-img hidden" src="" alt="&nbsp;" title="" />
+        </div>
+        <div class="gag-img-holder">
+          <img class="gag-img hidden" src="" alt="&nbsp;" title="" />
+        </div>
       </div>
     </div>
 
     <div class="gag-imgs-wrapper hidden">
       <div class="gag-imgs">
-        <div class="gag-img-holder"><img class="gag-img hidden" src="" alt="&nbsp;" title=""></div>
-        <div class="gag-img-holder"><img class="gag-img hidden" src="" alt="&nbsp;" title=""></div>
-        <div class="gag-img-holder"><img class="gag-img hidden" src="" alt="&nbsp;" title=""></div>
-        <div class="gag-img-holder"><img class="gag-img hidden" src="" alt="&nbsp;" title=""></div>
+        <div class="gag-img-holder">
+          <img class="gag-img hidden" src="" alt="&nbsp;" title="" />
+        </div>
+        <div class="gag-img-holder">
+          <img class="gag-img hidden" src="" alt="&nbsp;" title="" />
+        </div>
+        <div class="gag-img-holder">
+          <img class="gag-img hidden" src="" alt="&nbsp;" title="" />
+        </div>
+        <div class="gag-img-holder">
+          <img class="gag-img hidden" src="" alt="&nbsp;" title="" />
+        </div>
       </div>
     </div>
 
     <footer id="foot">
-      <p id="disclaimer">
-        This is alpha software and may be horribly broken. Copyleft &#x1f12f; 2018-2020, Dr. Jonathan Helianthicus Doe, &#x2163;. All rites reversed.
-      </p>
-      <p>
-        <span class="foot-large">
-          <a target="_blank" rel="noopener noreferrer" href="https://github.com/JonathanHelianthicusDoe/gag_combo_gen_web">Source</a>
-          &verbar;
-        </span>
-        <a target="_blank" rel="noopener noreferrer" href="./web_labels.html" data-jslicense="1">JavaScript/WebAssembly license information</a>
-      </p>
+      <div id="foot-inner">
+        <p id="disclaimer">
+          This is alpha software and may be horribly broken. Copyleft &#x1f12f;
+          2018-2020, Dr. Jonathan Helianthicus Doe, IV.
+          <a href="https://www.gnu.org/licenses/agpl-3.0">All rites reversed</a
+          >.
+        </p>
+        <p>
+          <span class="foot-large">
+            <a href="../index.html">Back to Jon Doe (website of)</a>
+            &#x007c;
+          </span>
+          <span class="foot-large">
+            <a
+              target="_blank"
+              rel="noopener noreferrer"
+              href="https://github.com/JonathanHelianthicusDoe/gag_combo_gen_web"
+              >Source</a
+            >
+            &#x007c;
+          </span>
+          <a
+            target="_blank"
+            rel="noopener noreferrer"
+            href="./web_labels.html"
+            data-jslicense="1"
+            >JavaScript/WebAssembly license information</a
+          >
+        </p>
+      </div>
     </footer>
   </body>
 </html>
