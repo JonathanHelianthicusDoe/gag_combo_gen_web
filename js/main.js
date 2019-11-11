@@ -158,7 +158,7 @@ function main(r) {
 
                 gag_img.classList.add("hidden");
                 gag_img.src = "";
-                gag_img.alt = "\u00a0";
+                gag_img.alt = "";
                 gag_img.title = "";
             }
         }
