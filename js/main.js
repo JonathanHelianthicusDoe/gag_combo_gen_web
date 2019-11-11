@@ -45,7 +45,8 @@ window.onload = function() {
                 .then(r => WebAssembly.instantiate(r))
                 .then(main, e => {
                     document.getElementById("gag-imgs-wrapper").innerHTML =
-                        `<div id="error-div"><h1>${e}</h1><p>Woops.</p></div>`;
+                        `<div id="error-div"><p><code>${e}</code></p>
+                         <p>Woops.</p></div>`;
                     throw e;
                 });
         });
@@ -136,8 +137,8 @@ function main(r) {
             const gag_imgs =
                 gag_imgs_wrapper.getElementsByClassName("gag-img");
 
-            let j;
-            for (j = 0; j < combo.length; ++j) {
+            let j = 0;
+            for (; j < combo.length; ++j) {
                 const [gag_img, combo_str] = [gag_imgs[j], combo[j]];
                 gag_img.src = `img/${combo_str}.png`;
 
