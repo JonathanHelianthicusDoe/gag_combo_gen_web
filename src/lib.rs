@@ -1,13 +1,11 @@
 #![forbid(unsafe_code)]
 #![deny(clippy::all)]
+#![deny(deprecated)]
 
-mod consts;
-
-use consts::DEFAULT_GAGS;
 use fxhash::{FxHashMap as Map, FxHashSet as Set};
 use gag_combo_gen::{
     gag_types::{Gag, GagType, GAG_TYPES},
-    gags::hash_gag,
+    gags::{hash_gag, DEFAULT_GAGS},
     opt::{k_opt_combos, opt_combo},
 };
 use lazy_static::lazy_static;

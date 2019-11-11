@@ -27,6 +27,6 @@
   },
   "homepage": "https://github.com/JonathanHelianthicusDoe/gag_combo_gen_web#readme",
   "devDependencies": {
-    "eslint": "^6.5.1"
+    "eslint": "^6.6.0"
   }
 }
