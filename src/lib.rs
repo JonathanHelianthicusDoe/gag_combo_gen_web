@@ -142,7 +142,7 @@ pub extern "C" fn gen(
     let gags: Vec<_> = DEFAULT_GAGS
         .iter()
         .filter(|g| {
-            if g.gag_type == GagType::PassGag {
+            if g.gag_type == GagType::Pass {
                 true
             } else {
                 let n: u8 = g.gag_type.into();
