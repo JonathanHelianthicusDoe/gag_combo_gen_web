@@ -6,6 +6,10 @@
     "proseWrap": "always",
     "htmlWhitespaceSensitivity": "css",
     "endOfLine": "lf",
+    "semi": true,
+    "quoteProps": "as-needed",
+    "trailingComma": "all",
+    "arrowParens": "avoid",
     "overrides": [
         {
             "files": ["*.html"],

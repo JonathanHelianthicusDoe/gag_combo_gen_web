@@ -23,45 +23,85 @@
 
 "use strict";
 
-/* eslint-disable indent */
 const GAG_NAMES = [
     "pass",
-  /* trap           sound             throw              squirt              drop */
-    "banana_peel", "bikehorn",       "cupcake",         "squirting_flower", "flowerpot",
-    "rake",        "whistle",        "fruit_pie_slice", "glass_of_water",   "sandbag",
-    "marbles",     "bugle",          "cream_pie_slice", "squirtgun",        "anvil",
-    "quicksand",   "aoogah",         "fruit_pie",       "seltzer_bottle",   "big_weight",
-    "trap_door",   "elephant_trunk", "cream_pie",       "fire_hose",        "safe",
-    "tnt",         "foghorn",        "cake",            "storm_cloud",      "grand_piano",
-    "railroad",    "opera_singer",   "wedding_cake",    "geyser",           "toontanic",
+
+    /* Level 1 */
+    "banana_peel",
+    "bikehorn",
+    "cupcake",
+    "squirting_flower",
+    "flowerpot",
+
+    /* Level 2 */
+    "rake",
+    "whistle",
+    "fruit_pie_slice",
+    "glass_of_water",
+    "sandbag",
+
+    /* Level 3 */
+    "marbles",
+    "bugle",
+    "cream_pie_slice",
+    "squirtgun",
+    "anvil",
+
+    /* Level 4 */
+    "quicksand",
+    "aoogah",
+    "fruit_pie",
+    "seltzer_bottle",
+    "big_weight",
+
+    /* Level 5 */
+    "trap_door",
+    "elephant_trunk",
+    "cream_pie",
+    "fire_hose",
+    "safe",
+
+    /* Level 6 */
+    "tnt",
+    "foghorn",
+    "cake",
+    "storm_cloud",
+    "grand_piano",
+
+    /* Level 7 */
+    "railroad",
+    "opera_singer",
+    "wedding_cake",
+    "geyser",
+    "toontanic",
 ];
-/* eslint-enable indent */
 
 const NO_LURE = 0x00;
-const LURING  = 0x01;
-const LURED   = 0x02;
+const LURING = 0x01;
+const LURED = 0x02;
 
-const BLUE_MAGNET      = 0x00;
-const HYPNO            = 0x01;
-const ORG_HYPNO        = 0x02;
-const PRESENTATION     = 0x03;
+const BLUE_MAGNET = 0x00;
+const HYPNO = 0x01;
+const ORG_HYPNO = 0x02;
+const PRESENTATION = 0x03;
 const ORG_PRESENTATION = 0x04;
 
 window.onload = function() {
-    WebAssembly.instantiateStreaming(fetch("wasm/gag_combo_gen_web.wasm"))
-        .then(main, () => {
-            fetch("wasm/gag_combo_gen_web.wasm")
-                .then(r => r.arrayBuffer())
-                .then(r => WebAssembly.instantiate(r))
-                .then(main, e => {
-                    document.getElementById("combo-display-wrapper-0")
-                        .innerHTML = `<div id="error-div">
-                                      <p><code>${e}</code></p>
-                                      <p>Woops.</p></div>`;
+    WebAssembly.instantiateStreaming(
+        fetch("wasm/gag_combo_gen_web.wasm"),
+    ).then(main, () => {
+        fetch("wasm/gag_combo_gen_web.wasm")
+            .then(r => r.arrayBuffer())
+            .then(r => WebAssembly.instantiate(r))
+            .then(main, e => {
+                document.getElementById(
+                    "combo-display-wrapper-0",
+                ).innerHTML = `<div id="error-div"><p><code>${e}</code></p>
+                               <p>Woops.</p></div>`;
 
-                    throw e;
-                });
-        });
+                throw e;
+            });
+    });
 };
 
 function main(r) {
@@ -83,8 +123,9 @@ function main(r) {
     const squirt_elem = document.getElementById("squirt-select");
     const drop_elem = document.getElementById("drop-select");
 
-    const combo_display_wrappers =
-        document.getElementsByClassName("combo-display-wrapper");
+    const combo_display_wrappers = document.getElementsByClassName(
+        "combo-display-wrapper",
+    );
 
     function update() {
         const cog_level = +cog_level_elem.value;
@@ -108,15 +149,20 @@ function main(r) {
         })();
         const lure_gag = (() => {
             switch (lure_gag_elem.value) {
-            case "blue-magnet":      return BLUE_MAGNET;
-            case "hypno":            return HYPNO;
-            case "org-hypno":        return ORG_HYPNO;
-            case "presentation":     return PRESENTATION;
-            case "org-presentation": return ORG_PRESENTATION;
-            default:
-                lure_gag_elem.value = "blue-magnet";
+                case "blue-magnet":
+                    return BLUE_MAGNET;
+                case "hypno":
+                    return HYPNO;
+                case "org-hypno":
+                    return ORG_HYPNO;
+                case "presentation":
+                    return PRESENTATION;
+                case "org-presentation":
+                    return ORG_PRESENTATION;
+                default:
+                    lure_gag_elem.value = "blue-magnet";
 
-                return BLUE_MAGNET;
+                    return BLUE_MAGNET;
             }
         })();
         const lure = luring | (lure_gag << 8);
@@ -145,9 +191,14 @@ function main(r) {
         const use_throw = throw_elem.checked;
         const use_squirt = squirt_elem.checked;
         const use_drop = drop_elem.checked;
-        const gag_types =
-            [use_trap, use_sound, use_throw, use_squirt, use_drop];
-        const gag_types_mask = gag_types.reduce((m, b, i) => m | b << i, 0);
+        const gag_types = [
+            use_trap,
+            use_sound,
+            use_throw,
+            use_squirt,
+            use_drop,
+        ];
+        const gag_types_mask = gag_types.reduce((m, b, i) => m | (b << i), 0);
 
         const combos = gen_combos(
             k,
@@ -169,8 +220,9 @@ function main(r) {
             combo_display_wrapper.classList.remove("hidden");
 
             const [combo, accuracy] = combos[i];
-            const gag_imgs =
-                combo_display_wrapper.getElementsByClassName("gag-img");
+            const gag_imgs = combo_display_wrapper.getElementsByClassName(
+                "gag-img",
+            );
 
             let j = 0;
             for (; j < combo.length; ++j) {
@@ -198,8 +250,9 @@ function main(r) {
                 gag_img.title = "";
             }
 
-            const accuracy_span =
-                combo_display_wrapper.getElementsByClassName("accuracy")[0];
+            const accuracy_span = combo_display_wrapper.getElementsByClassName(
+                "accuracy",
+            )[0];
             accuracy_span.innerText = `${(accuracy * 100).toFixed(1)}%`;
             accuracy_span.style.color = accuracy_color(accuracy);
         }
@@ -240,15 +293,28 @@ function main(r) {
         const non_lure_toons =
             (lure & 0x000000ff) === LURING ? toons - 1 : toons;
 
-        return stored_combos.map(
-            ([h, a]) => [translate_combo(non_lure_toons, h), a]);
+        return stored_combos.map(([h, a]) => [
+            translate_combo(non_lure_toons, h),
+            a,
+        ]);
     }
 
     const elems = [
-        cog_level_elem, no_lure_elem, luring_elem, lured_elem,
-        lure_gag_elem,  v2_elem,      toons_elem,  org_count_elem, k_elem,
+        cog_level_elem,
+        no_lure_elem,
+        luring_elem,
+        lured_elem,
+        lure_gag_elem,
+        v2_elem,
+        toons_elem,
+        org_count_elem,
+        k_elem,
 
-        trap_elem,      sound_elem,   throw_elem,  squirt_elem,    drop_elem,
+        trap_elem,
+        sound_elem,
+        throw_elem,
+        squirt_elem,
+        drop_elem,
     ];
     for (const elem of elems) {
         elem.onchange = update;
@@ -281,8 +347,10 @@ function title_case(s) {
 
 function readable_gag_name(s) {
     if (s.substr(-4) === "_org") {
-        return "Organic " +
-            title_case(s.substr(0, s.length - 4).replace(/_/g, " "));
+        return (
+            "Organic " +
+            title_case(s.substr(0, s.length - 4).replace(/_/g, " "))
+        );
     }
 
     return title_case(s.replace(/_/g, " "));
@@ -299,17 +367,25 @@ function accuracy_color(accuracy) {
     let [r, g, b] = [0x6c, 0xf6, 0xee];
     const diff = 1.0 - accuracy;
 
-    const b_decr =          Math.min(diff,        0.05);
-    const r_incr = Math.max(Math.min(diff - 0.05, 0.2 ), 0);
-    const g_decr = Math.max(Math.min(diff - 0.25, 0.2 ), 0);
+    const b_decr = Math.min(diff, 0.05);
+    const r_incr = Math.max(Math.min(diff - 0.05, 0.2), 0);
+    const g_decr = Math.max(Math.min(diff - 0.25, 0.2), 0);
 
     // Spooky magic numbers!
     b -= b_decr * 2600;
-    r += r_incr *  700;
-    g -= g_decr *  700;
+    r += r_incr * 700;
+    g -= g_decr * 700;
 
-    return "#"
-        + Math.round(r).toString(16).padStart(2, "0")
-        + Math.round(g).toString(16).padStart(2, "0")
-        + Math.round(b).toString(16).padStart(2, "0");
+    return (
+        "#" +
+        Math.round(r)
+            .toString(16)
+            .padStart(2, "0") +
+        Math.round(g)
+            .toString(16)
+            .padStart(2, "0") +
+        Math.round(b)
+            .toString(16)
+            .padStart(2, "0")
+    );
 }
