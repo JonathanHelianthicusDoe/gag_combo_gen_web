@@ -37,6 +37,16 @@ const GAG_NAMES = [
 ];
 /* eslint-enable indent */
 
+const NO_LURE = 0x00;
+const LURING  = 0x01;
+const LURED   = 0x02;
+
+const BLUE_MAGNET      = 0x00;
+const HYPNO            = 0x01;
+const ORG_HYPNO        = 0x02;
+const PRESENTATION     = 0x03;
+const ORG_PRESENTATION = 0x04;
+
 window.onload = function() {
     WebAssembly.instantiateStreaming(fetch("wasm/gag_combo_gen_web.wasm"))
         .then(main, () => {
@@ -44,9 +54,11 @@ window.onload = function() {
                 .then(r => r.arrayBuffer())
                 .then(r => WebAssembly.instantiate(r))
                 .then(main, e => {
-                    document.getElementById("gag-imgs-wrapper").innerHTML =
-                        `<div id="error-div"><p><code>${e}</code></p>
-                         <p>Woops.</p></div>`;
+                    document.getElementById("combo-display-wrapper-0")
+                        .innerHTML = `<div id="error-div">
+                                      <p><code>${e}</code></p>
+                                      <p>Woops.</p></div>`;
+
                     throw e;
                 });
         });
@@ -56,7 +68,10 @@ function main(r) {
     const gag_combo_gen = r.instance.exports;
 
     const cog_level_elem = document.getElementById("cog-level");
+    const no_lure_elem = document.getElementById("no-lure");
+    const luring_elem = document.getElementById("luring");
     const lured_elem = document.getElementById("lured");
+    const lure_gag_elem = document.getElementById("lure-gag");
     const v2_elem = document.getElementById("v2");
     const toons_elem = document.getElementById("toons");
     const org_count_elem = document.getElementById("org-count");
@@ -68,14 +83,8 @@ function main(r) {
     const squirt_elem = document.getElementById("squirt-select");
     const drop_elem = document.getElementById("drop-select");
 
-    const elems = [
-        cog_level_elem, lured_elem, v2_elem,    toons_elem,  org_count_elem,
-        k_elem,
-        trap_elem,      sound_elem, throw_elem, squirt_elem, drop_elem,
-    ];
-
-    const gag_imgs_wrappers =
-        document.getElementsByClassName("gag-imgs-wrapper");
+    const combo_display_wrappers =
+        document.getElementsByClassName("combo-display-wrapper");
 
     function update() {
         const cog_level = +cog_level_elem.value;
@@ -84,7 +93,33 @@ function main(r) {
 
             return;
         }
-        const lured = lured_elem.checked;
+        const luring = (() => {
+            if (no_lure_elem.checked) {
+                return NO_LURE;
+            } else if (luring_elem.checked) {
+                return LURING;
+            } else if (lured_elem.checked) {
+                return LURED;
+            } else {
+                no_lure_elem.checked = true;
+
+                return NO_LURE;
+            }
+        })();
+        const lure_gag = (() => {
+            switch (lure_gag_elem.value) {
+            case "blue-magnet":      return BLUE_MAGNET;
+            case "hypno":            return HYPNO;
+            case "org-hypno":        return ORG_HYPNO;
+            case "presentation":     return PRESENTATION;
+            case "org-presentation": return ORG_PRESENTATION;
+            default:
+                lure_gag_elem.value = "blue-magnet";
+
+                return BLUE_MAGNET;
+            }
+        })();
+        const lure = luring | (lure_gag << 8);
         const v2 = v2_elem.checked;
         const toons = +toons_elem.value;
         if (toons > 4 || toons < 1) {
@@ -117,25 +152,25 @@ function main(r) {
         const combos = gen_combos(
             k,
             cog_level,
-            lured,
+            lure,
             v2,
             toons,
             org_count,
-            gag_types_mask
+            gag_types_mask,
         );
 
-        for (let i = 0; i < gag_imgs_wrappers.length; ++i) {
-            const gag_imgs_wrapper = gag_imgs_wrappers[i];
+        for (let i = 0; i < combo_display_wrappers.length; ++i) {
+            const combo_display_wrapper = combo_display_wrappers[i];
             if (i >= combos.length) {
-                gag_imgs_wrapper.classList.add("hidden");
+                combo_display_wrapper.classList.add("hidden");
 
                 continue;
             }
-            gag_imgs_wrapper.classList.remove("hidden");
+            combo_display_wrapper.classList.remove("hidden");
 
-            const combo = combos[i];
+            const [combo, accuracy] = combos[i];
             const gag_imgs =
-                gag_imgs_wrapper.getElementsByClassName("gag-img");
+                combo_display_wrapper.getElementsByClassName("gag-img");
 
             let j = 0;
             for (; j < combo.length; ++j) {
@@ -162,13 +197,18 @@ function main(r) {
                 gag_img.alt = "";
                 gag_img.title = "";
             }
+
+            const accuracy_span =
+                combo_display_wrapper.getElementsByClassName("accuracy")[0];
+            accuracy_span.innerText = `${(accuracy * 100).toFixed(1)}%`;
+            accuracy_span.style.color = accuracy_color(accuracy);
         }
     }
 
     function gen_combos(
         k,
         cog_level,
-        lured,
+        lure,
         v2,
         toons,
         org_count,
@@ -177,28 +217,39 @@ function main(r) {
         gag_combo_gen.gen(
             k,
             cog_level,
-            lured,
+            lure,
             v2,
             toons,
             org_count,
             gag_types_mask,
         );
 
-        const combo_hashes = [];
+        const stored_combos = [];
         for (let i = 0; i < k; ++i) {
-            const hash = gag_combo_gen.get(i);
+            const hash = gag_combo_gen.get_combo(i);
             if (hash === 0) {
                 break;
             }
-            combo_hashes.push(hash);
+            const accuracy = gag_combo_gen.get_accuracy(i);
+            stored_combos.push([hash, accuracy]);
         }
-        if (combo_hashes.length === 0) {
-            combo_hashes.push(0);
+        if (stored_combos.length === 0) {
+            stored_combos.push([0, 1]);
         }
 
-        return combo_hashes.map(h => translate_combo(toons, h));
+        const non_lure_toons =
+            (lure & 0x000000ff) === LURING ? toons - 1 : toons;
+
+        return stored_combos.map(
+            ([h, a]) => [translate_combo(non_lure_toons, h), a]);
     }
 
+    const elems = [
+        cog_level_elem, no_lure_elem, luring_elem, lured_elem,
+        lure_gag_elem,  v2_elem,      toons_elem,  org_count_elem, k_elem,
+
+        trap_elem,      sound_elem,   throw_elem,  squirt_elem,    drop_elem,
+    ];
     for (const elem of elems) {
         elem.onchange = update;
     }
@@ -235,4 +286,30 @@ function readable_gag_name(s) {
     }
 
     return title_case(s.replace(/_/g, " "));
+}
+
+function accuracy_color(accuracy) {
+    if (accuracy > 0.99) {
+        return "#6cf6ee";
+    }
+    if (accuracy <= 0.5) {
+        return "#f65353";
+    }
+
+    let [r, g, b] = [0x6c, 0xf6, 0xee];
+    const diff = 1.0 - accuracy;
+
+    const b_decr =          Math.min(diff,        0.05);
+    const r_incr = Math.max(Math.min(diff - 0.05, 0.2 ), 0);
+    const g_decr = Math.max(Math.min(diff - 0.25, 0.2 ), 0);
+
+    // Spooky magic numbers!
+    b -= b_decr * 2600;
+    r += r_incr *  700;
+    g -= g_decr *  700;
+
+    return "#"
+        + Math.round(r).toString(16).padStart(2, "0")
+        + Math.round(g).toString(16).padStart(2, "0")
+        + Math.round(b).toString(16).padStart(2, "0");
 }

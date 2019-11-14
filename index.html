@@ -8,40 +8,112 @@
     </title>
     <meta name="viewport" content="width=device-width,initial-scale=1" />
 
-    <link rel="stylesheet" href="css/style.css" type="text/css" />
-    <script type="text/javascript" src="js/main.js" defer></script>
+    <link rel="stylesheet" href="./css/style.css" type="text/css" />
+    <script type="text/javascript" src="./js/main.js" defer></script>
     <link rel="icon" type="image/png" href="../img/original/favicon.png" />
   </head>
 
   <body>
+    <noscript
+      ><div id="noscript-div">
+        <p>
+          The gag combo generator is a web browser app, so you will need
+          <a
+            target="_blank"
+            rel="noopener noreferrer"
+            href="https://en.wikipedia.org/wiki/JavaScript"
+            >JavaScript</a
+          >
+          (as well as
+          <a
+            target="_blank"
+            rel="noopener noreferrer"
+            href="https://en.wikipedia.org/wiki/WebAssembly"
+            >WebAssembly</a
+          >) enabled to use it. Don&rsquo;t worry, though, all of the code on
+          this page (and this website generally) is
+          <a
+            target="_blank"
+            rel="noopener noreferrer"
+            href="https://en.wikipedia.org/wiki/Free_software"
+            >free software</a
+          >, licensed to you under the terms of the
+          <a
+            target="_blank"
+            rel="noopener noreferrer"
+            href="https://www.gnu.org/licenses/agpl-3.0.en.html"
+            >GNU Affero General Public License, version 3</a
+          >
+          (or any later version of the same license, at your option). See the
+          <a
+            target="_blank"
+            rel="noopener noreferrer"
+            href="./web_labels.html"
+            data-jslicense="1"
+            >JavaScript/WebAssembly license information</a
+          >
+          page for more details and access to source code.
+        </p>
+      </div>
+    </noscript>
+
     <div id="main-controls-wrapper" class="controls-wrapper">
       <div id="main-controls-container" class="controls-container">
-        <label>
+        <label class="input-segment">
           Cog level
           <input id="cog-level" type="number" min="1" max="12" value="1" />
         </label>
 
-        <label>
-          Lured
-          <input id="lured" type="checkbox" />
+        <div id="lure-radio-group" class="input-segment">
+          <label class="lure-label">
+            No lure
+            <input
+              id="no-lure"
+              type="radio"
+              name="lure"
+              value="no-lure"
+              checked
+            />
+          </label>
+
+          <label class="lure-label">
+            Luring
+            <input id="luring" type="radio" name="lure" value="luring" />
+          </label>
+
+          <label class="lure-label">
+            Lured
+            <input id="lured" type="radio" name="lure" value="lured" />
+          </label>
+        </div>
+
+        <label class="input-segment">
+          Lure gag
+          <select id="lure-gag" type="lure-gag-select">
+            <option value="blue-magnet">Blue magnet/$5</option>
+            <option value="hypno">Hypno/$10</option>
+            <option value="org-hypno">Org hypno/$10</option>
+            <option value="presentation">Presentation</option>
+            <option value="org-presentation">Org presentation</option>
+          </select>
         </label>
 
-        <label>
+        <label class="input-segment">
           v2.0
           <input id="v2" type="checkbox" />
         </label>
 
-        <label>
+        <label class="input-segment">
           Number of toons/gags
           <input id="toons" type="number" min="1" max="4" value="1" />
         </label>
 
-        <label>
+        <label class="input-segment">
           Number of organic gags
           <input id="org-count" type="number" min="0" max="4" value="0" />
         </label>
 
-        <label>
+        <label class="input-segment">
           Generate top
           <input id="k" type="number" min="1" max="10" value="1" />
         </label>
@@ -50,34 +122,34 @@
 
     <div id="gag-types-wrapper" class="controls-wrapper">
       <div id="gag-types-container" class="controls-container">
-        <label>
+        <label class="input-segment">
           Trap gags
           <input id="trap-select" type="checkbox" />
         </label>
 
-        <label>
+        <label class="input-segment">
           Sound gags
           <input id="sound-select" type="checkbox" />
         </label>
 
-        <label>
+        <label class="input-segment">
           Throw gags
           <input id="throw-select" type="checkbox" />
         </label>
 
-        <label>
+        <label class="input-segment">
           Squirt gags
           <input id="squirt-select" type="checkbox" />
         </label>
 
-        <label>
+        <label class="input-segment">
           Drop gags
           <input id="drop-select" type="checkbox" />
         </label>
       </div>
     </div>
 
-    <div class="gag-imgs-wrapper">
+    <div id="combo-display-wrapper-0" class="combo-display-wrapper">
       <div class="gag-imgs">
         <div class="gag-img-holder">
           <img class="gag-img hidden" src="" alt="" title="" />
@@ -92,9 +164,13 @@
           <img class="gag-img hidden" src="" alt="" title="" />
         </div>
       </div>
+
+      <div class="accuracy-holder">
+        <span class="accuracy"></span>
+      </div>
     </div>
 
-    <div class="gag-imgs-wrapper hidden">
+    <div class="combo-display-wrapper hidden">
       <div class="gag-imgs">
         <div class="gag-img-holder">
           <img class="gag-img hidden" src="" alt="" title="" />
@@ -109,9 +185,13 @@
           <img class="gag-img hidden" src="" alt="" title="" />
         </div>
       </div>
+
+      <div class="accuracy-holder">
+        <span class="accuracy"></span>
+      </div>
     </div>
 
-    <div class="gag-imgs-wrapper hidden">
+    <div class="combo-display-wrapper hidden">
       <div class="gag-imgs">
         <div class="gag-img-holder">
           <img class="gag-img hidden" src="" alt="" title="" />
@@ -126,9 +206,13 @@
           <img class="gag-img hidden" src="" alt="" title="" />
         </div>
       </div>
+
+      <div class="accuracy-holder">
+        <span class="accuracy"></span>
+      </div>
     </div>
 
-    <div class="gag-imgs-wrapper hidden">
+    <div class="combo-display-wrapper hidden">
       <div class="gag-imgs">
         <div class="gag-img-holder">
           <img class="gag-img hidden" src="" alt="" title="" />
@@ -143,9 +227,13 @@
           <img class="gag-img hidden" src="" alt="" title="" />
         </div>
       </div>
+
+      <div class="accuracy-holder">
+        <span class="accuracy"></span>
+      </div>
     </div>
 
-    <div class="gag-imgs-wrapper hidden">
+    <div class="combo-display-wrapper hidden">
       <div class="gag-imgs">
         <div class="gag-img-holder">
           <img class="gag-img hidden" src="" alt="" title="" />
@@ -160,9 +248,13 @@
           <img class="gag-img hidden" src="" alt="" title="" />
         </div>
       </div>
+
+      <div class="accuracy-holder">
+        <span class="accuracy"></span>
+      </div>
     </div>
 
-    <div class="gag-imgs-wrapper hidden">
+    <div class="combo-display-wrapper hidden">
       <div class="gag-imgs">
         <div class="gag-img-holder">
           <img class="gag-img hidden" src="" alt="" title="" />
@@ -177,9 +269,13 @@
           <img class="gag-img hidden" src="" alt="" title="" />
         </div>
       </div>
+
+      <div class="accuracy-holder">
+        <span class="accuracy"></span>
+      </div>
     </div>
 
-    <div class="gag-imgs-wrapper hidden">
+    <div class="combo-display-wrapper hidden">
       <div class="gag-imgs">
         <div class="gag-img-holder">
           <img class="gag-img hidden" src="" alt="" title="" />
@@ -194,9 +290,13 @@
           <img class="gag-img hidden" src="" alt="" title="" />
         </div>
       </div>
+
+      <div class="accuracy-holder">
+        <span class="accuracy"></span>
+      </div>
     </div>
 
-    <div class="gag-imgs-wrapper hidden">
+    <div class="combo-display-wrapper hidden">
       <div class="gag-imgs">
         <div class="gag-img-holder">
           <img class="gag-img hidden" src="" alt="" title="" />
@@ -211,9 +311,13 @@
           <img class="gag-img hidden" src="" alt="" title="" />
         </div>
       </div>
+
+      <div class="accuracy-holder">
+        <span class="accuracy"></span>
+      </div>
     </div>
 
-    <div class="gag-imgs-wrapper hidden">
+    <div class="combo-display-wrapper hidden">
       <div class="gag-imgs">
         <div class="gag-img-holder">
           <img class="gag-img hidden" src="" alt="" title="" />
@@ -228,9 +332,13 @@
           <img class="gag-img hidden" src="" alt="" title="" />
         </div>
       </div>
+
+      <div class="accuracy-holder">
+        <span class="accuracy"></span>
+      </div>
     </div>
 
-    <div class="gag-imgs-wrapper hidden">
+    <div class="combo-display-wrapper hidden">
       <div class="gag-imgs">
         <div class="gag-img-holder">
           <img class="gag-img hidden" src="" alt="" title="" />
@@ -244,6 +352,10 @@
         <div class="gag-img-holder">
           <img class="gag-img hidden" src="" alt="" title="" />
         </div>
+      </div>
+
+      <div class="accuracy-holder">
+        <span class="accuracy"></span>
       </div>
     </div>
 

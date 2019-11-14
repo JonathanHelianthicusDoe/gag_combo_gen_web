@@ -31,11 +31,8 @@ body {
     font-family: var(--sans);
 }
 
-label {
-    padding: 0.25rem 3rem 0.25rem 3rem;
-}
-
-input {
+input,
+select {
     background-color: transparent !important;
     font-family: var(--sans);
     color: var(--off-white) !important;
@@ -59,6 +56,12 @@ a:hover {
     color: #deacff;
 }
 
+#noscript-div {
+    padding: 2rem 12.5% 2rem 12.5%;
+
+    background-color: #0d3849;
+}
+
 .org {
     filter: contrast(125%); /* brightness(125%) */
 }
@@ -75,25 +78,53 @@ a:hover {
     margin: auto;
 }
 
-.gag-imgs-wrapper {
+.input-segment {
+    padding: 0.25rem 3rem 0.25rem 3rem;
+}
+
+.lure-label {
+    padding: 0 0.5rem 0 0.5rem;
+}
+
+.combo-display-wrapper {
     display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+
     width: 100%;
 }
 
 .gag-imgs {
     display: flex;
-    margin: auto;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
 }
 
 .gag-img-holder {
     display: flex;
-    overflow: hidden;
+    align-items: center;
+    justify-content: center;
+
     width: 70px;
     height: 70px;
+
+    overflow: hidden;
 }
 
 .gag-img-holder > img {
     margin: auto;
+}
+
+.accuracy-holder {
+    width: 7rem;
+
+    overflow: hidden;
+}
+
+.accuracy {
+    font-size: 1.5rem;
 }
 
 #error-div {
