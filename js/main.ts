@@ -162,7 +162,7 @@ function main(instantiated: WebAssembly.WebAssemblyInstantiatedSource): void {
 
     const combo_display_wrappers = document.getElementsByClassName(
         "combo-display-wrapper",
-    );
+    ) as HTMLCollectionOf<HTMLDivElement>;
 
     function update(): void {
         const cog_level = +cog_level_elem.value;
