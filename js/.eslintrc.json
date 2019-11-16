@@ -1,33 +1,78 @@
 {
+    "parser": "@typescript-eslint/parser",
+    "parserOptions": {
+        "project": "js/tsconfig.json"
+    },
+    "plugins": ["@typescript-eslint"],
     "env": {
         "browser": true
     },
-    "extends": "eslint:recommended",
-    "globals": {
-        "Atomics": "readonly",
-        "SharedArrayBuffer": "readonly"
-    },
-    "parserOptions": {
-        "ecmaVersion": 2020,
-        "sourceType": "module"
-    },
+    "extends": [
+        "eslint:recommended",
+        "plugin:@typescript-eslint/eslint-recommended",
+        "plugin:@typescript-eslint/recommended"
+    ],
     "rules": {
-        "indent": [
+        "camelcase": "off",
+        "max-len": ["warn", {
+            "code": 79
+        }],
+        "@typescript-eslint/camelcase": "off",
+        "@typescript-eslint/restrict-plus-operands": "error",
+        "@typescript-eslint/no-use-before-define": "off",
+        "@typescript-eslint/explicit-function-return-type": ["warn", {
+            "allowExpressions": true,
+            "allowTypedFunctionExpressions": true,
+            "allowHigherOrderFunctions": true
+        }],
+        "semi": "off",
+        "@typescript-eslint/semi": "error",
+        "@typescript-eslint/await-thenable": "warn",
+        "@typescript-eslint/ban-ts-ignore": "error",
+        "@typescript-eslint/ban-types": ["error", {
+            "types": {
+                "Array": "use T[] instead",
+                "Object": "use {} instead",
+                "String": "use string instead"
+            }
+        }],
+        "@typescript-eslint/consistent-type-definitions": [
             "error",
-            4,
-            { "SwitchCase": 1 }
+            "interface"
         ],
-        "linebreak-style": [
-            "error",
-            "unix"
-        ],
-        "quotes": [
-            "error",
-            "double"
-        ],
-        "semi": [
-            "error",
-            "always"
-        ]
+        "func-call-spacing": "off",
+        "@typescript-eslint/func-call-spacing": "warn",
+        "@typescript-eslint/generic-type-naming": ["warn", "^[A-Z]$"],
+        "indent": "off",
+        "@typescript-eslint/indent": ["error", 4, { "SwitchCase": 1 }],
+        "no-extra-parens": "off",
+        "@typescript-eslint/no-extra-parens": "off",
+        "@typescript-eslint/no-extraneous-class": ["error", {
+            "allowConstructorOnly": true,
+            "allowEmpty": false,
+            "allowStaticOnly": false
+        }],
+        "@typescript-eslint/no-floating-promises": "warn",
+        "@typescript-eslint/no-for-in-array": "error",
+        "@typescript-eslint/no-require-imports": "error",
+        "@typescript-eslint/no-this-alias": "error",
+        "@typescript-eslint/no-unnecessary-qualifier": "warn",
+        "@typescript-eslint/no-unnecessary-type-assertion": "error",
+        "@typescript-eslint/no-useless-constructor": "error",
+        "@typescript-eslint/prefer-for-of": "error",
+        "@typescript-eslint/prefer-function-type": "error",
+        "@typescript-eslint/prefer-includes": "error",
+        "@typescript-eslint/prefer-readonly": "error",
+        "@typescript-eslint/prefer-regexp-exec": "error",
+        "@typescript-eslint/prefer-string-starts-ends-with": "error",
+        "@typescript-eslint/require-array-sort-compare": "error",
+        "@typescript-eslint/strict-boolean-expressions": "error",
+        "@typescript-eslint/triple-slash-reference": ["error", {
+            "path": "never",
+            "types": "never",
+            "lib": "never"
+        }],
+        "@typescript-eslint/unbound-method": "error",
+        "@typescript-eslint/unified-signatures": "warn"
     }
 }

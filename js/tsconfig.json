@@ -1,0 +1,21 @@
+{
+    "compilerOptions": {
+        "outDir": ".",
+        "module": "esnext",
+        "target": "esnext",
+        "alwaysStrict": true,
+        "strict": true,
+        "noEmitOnError": true,
+        "noFallthroughCasesInSwitch": true,
+        "noImplicitAny": true,
+        "noImplicitReturns": true,
+        "noImplicitThis": true,
+        "noUnusedLocals": false,
+        "newLine": "LF",
+        "charset": "utf8",
+        "emitBOM": false,
+        "pretty": true
+    },
+    "files": ["main.ts"],
+    "include": ["./**/*.ts", "./**/*.d.ts"]
+}

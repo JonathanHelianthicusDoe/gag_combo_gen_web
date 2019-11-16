@@ -21,7 +21,34 @@
  * this page.
  */
 
-"use strict";
+interface GagComboGenExports {
+    readonly gen: (
+        k: number,
+        cog_level: number,
+        lure: number,
+        v2: boolean,
+        toons: number,
+        org_count: number,
+        gag_types_mask: number,
+    ) => void;
+
+    readonly get_combo: (index: number) => number;
+    readonly get_accuracy: (index: number) => number;
+}
+
+enum Luring {
+    NO_LURE = 0x00,
+    LURING = 0x01,
+    LURED = 0x02,
+}
+
+enum LureGag {
+    BLUE_MAGNET = 0x00,
+    HYPNO = 0x01,
+    ORG_HYPNO = 0x02,
+    PRESENTATION = 0x03,
+    ORG_PRESENTATION = 0x04,
+}
 
 const GAG_NAMES = [
     "pass",
@@ -76,17 +103,7 @@ const GAG_NAMES = [
     "toontanic",
 ];
 
-const NO_LURE = 0x00;
-const LURING = 0x01;
-const LURED = 0x02;
-
-const BLUE_MAGNET = 0x00;
-const HYPNO = 0x01;
-const ORG_HYPNO = 0x02;
-const PRESENTATION = 0x03;
-const ORG_PRESENTATION = 0x04;
-
-window.onload = function() {
+document.addEventListener("DOMContentLoaded", () => {
     WebAssembly.instantiateStreaming(
         fetch("wasm/gag_combo_gen_web.wasm"),
     ).then(main, () => {
@@ -94,94 +111,114 @@ window.onload = function() {
             .then(r => r.arrayBuffer())
             .then(r => WebAssembly.instantiate(r))
             .then(main, e => {
-                document.getElementById(
+                const combo_display_wrapper = document.getElementById(
                     "combo-display-wrapper-0",
-                ).innerHTML = `<div id="error-div"><p><code>${e}</code></p>
-                               <p>Woops.</p></div>`;
+                ) as HTMLDivElement;
+                combo_display_wrapper.innerHTML = `<div id="error-div"><p>
+                    <code>${e}</code></p><p>Whoops.</p></div>`;
 
                 throw e;
             });
     });
-};
+});
 
-function main(r) {
-    const gag_combo_gen = r.instance.exports;
+function main(instantiated: WebAssembly.WebAssemblyInstantiatedSource): void {
+    const gag_combo_gen = (instantiated.instance
+        .exports as unknown) as GagComboGenExports;
 
-    const cog_level_elem = document.getElementById("cog-level");
-    const no_lure_elem = document.getElementById("no-lure");
-    const luring_elem = document.getElementById("luring");
-    const lured_elem = document.getElementById("lured");
-    const lure_gag_elem = document.getElementById("lure-gag");
-    const v2_elem = document.getElementById("v2");
-    const toons_elem = document.getElementById("toons");
-    const org_count_elem = document.getElementById("org-count");
-    const k_elem = document.getElementById("k");
+    const cog_level_elem = document.getElementById(
+        "cog-level",
+    ) as HTMLInputElement;
+    const no_lure_elem = document.getElementById(
+        "no-lure",
+    ) as HTMLInputElement;
+    const luring_elem = document.getElementById("luring") as HTMLInputElement;
+    const lured_elem = document.getElementById("lured") as HTMLInputElement;
+    const lure_gag_elem = document.getElementById(
+        "lure-gag",
+    ) as HTMLSelectElement;
+    const v2_elem = document.getElementById("v2") as HTMLInputElement;
+    const toons_elem = document.getElementById("toons") as HTMLInputElement;
+    const org_count_elem = document.getElementById(
+        "org-count",
+    ) as HTMLInputElement;
+    const k_elem = document.getElementById("k") as HTMLInputElement;
 
-    const trap_elem = document.getElementById("trap-select");
-    const sound_elem = document.getElementById("sound-select");
-    const throw_elem = document.getElementById("throw-select");
-    const squirt_elem = document.getElementById("squirt-select");
-    const drop_elem = document.getElementById("drop-select");
+    const trap_elem = document.getElementById(
+        "trap-select",
+    ) as HTMLInputElement;
+    const sound_elem = document.getElementById(
+        "sound-select",
+    ) as HTMLInputElement;
+    const throw_elem = document.getElementById(
+        "throw-select",
+    ) as HTMLInputElement;
+    const squirt_elem = document.getElementById(
+        "squirt-select",
+    ) as HTMLInputElement;
+    const drop_elem = document.getElementById(
+        "drop-select",
+    ) as HTMLInputElement;
 
     const combo_display_wrappers = document.getElementsByClassName(
         "combo-display-wrapper",
     );
 
-    function update() {
+    function update(): void {
         const cog_level = +cog_level_elem.value;
         if (cog_level > 12 || cog_level < 1) {
-            cog_level_elem.value = 1;
+            cog_level_elem.value = "1";
 
             return;
         }
         const luring = (() => {
             if (no_lure_elem.checked) {
-                return NO_LURE;
+                return Luring.NO_LURE;
             } else if (luring_elem.checked) {
-                return LURING;
+                return Luring.LURING;
             } else if (lured_elem.checked) {
-                return LURED;
+                return Luring.LURED;
             } else {
                 no_lure_elem.checked = true;
 
-                return NO_LURE;
+                return Luring.NO_LURE;
             }
         })();
         const lure_gag = (() => {
             switch (lure_gag_elem.value) {
                 case "blue-magnet":
-                    return BLUE_MAGNET;
+                    return LureGag.BLUE_MAGNET;
                 case "hypno":
-                    return HYPNO;
+                    return LureGag.HYPNO;
                 case "org-hypno":
-                    return ORG_HYPNO;
+                    return LureGag.ORG_HYPNO;
                 case "presentation":
-                    return PRESENTATION;
+                    return LureGag.PRESENTATION;
                 case "org-presentation":
-                    return ORG_PRESENTATION;
+                    return LureGag.ORG_PRESENTATION;
                 default:
                     lure_gag_elem.value = "blue-magnet";
 
-                    return BLUE_MAGNET;
+                    return LureGag.BLUE_MAGNET;
             }
         })();
         const lure = luring | (lure_gag << 8);
         const v2 = v2_elem.checked;
         const toons = +toons_elem.value;
         if (toons > 4 || toons < 1) {
-            toons_elem.value = 1;
+            toons_elem.value = "1";
 
             return;
         }
         const org_count = +org_count_elem.value;
         if (org_count > 4 || org_count < 0) {
-            org_count_elem.value = 0;
+            org_count_elem.value = "0";
 
             return;
         }
         const k = +k_elem.value;
         if (k < 1 || k > 10) {
-            k_elem.value = 1;
+            k_elem.value = "1";
 
             return;
         }
@@ -198,7 +235,10 @@ function main(r) {
             use_squirt,
             use_drop,
         ];
-        const gag_types_mask = gag_types.reduce((m, b, i) => m | (b << i), 0);
+        const gag_types_mask = gag_types.reduce(
+            (m, b, i) => m | ((b ? 1 : 0) << i),
+            0,
+        );
 
         const combos = gen_combos(
             k,
@@ -222,7 +262,7 @@ function main(r) {
             const [combo, accuracy] = combos[i];
             const gag_imgs = combo_display_wrapper.getElementsByClassName(
                 "gag-img",
-            );
+            ) as HTMLCollectionOf<HTMLImageElement>;
 
             let j = 0;
             for (; j < combo.length; ++j) {
@@ -252,21 +292,21 @@ function main(r) {
 
             const accuracy_span = combo_display_wrapper.getElementsByClassName(
                 "accuracy",
-            )[0];
+            )[0] as HTMLSpanElement;
             accuracy_span.innerText = `${(accuracy * 100).toFixed(1)}%`;
             accuracy_span.style.color = accuracy_color(accuracy);
         }
     }
 
     function gen_combos(
-        k,
-        cog_level,
-        lure,
-        v2,
-        toons,
-        org_count,
-        gag_types_mask,
-    ) {
+        k: number,
+        cog_level: number,
+        lure: number,
+        v2: boolean,
+        toons: number,
+        org_count: number,
+        gag_types_mask: number,
+    ): [string[], number][] {
         gag_combo_gen.gen(
             k,
             cog_level,
@@ -291,7 +331,7 @@ function main(r) {
         }
 
         const non_lure_toons =
-            (lure & 0x000000ff) === LURING ? toons - 1 : toons;
+            (lure & 0x000000ff) === Luring.LURING ? toons - 1 : toons;
 
         return stored_combos.map(([h, a]) => [
             translate_combo(non_lure_toons, h),
@@ -323,7 +363,7 @@ function main(r) {
     update();
 }
 
-function translate_combo(gag_count, gen_result) {
+function translate_combo(gag_count: number, gen_result: number): string[] {
     const combo = [];
     for (let i = 0; i < gag_count; ++i) {
         const hash = gen_result & 0xff;
@@ -338,14 +378,14 @@ function translate_combo(gag_count, gen_result) {
     return combo;
 }
 
-function title_case(s) {
+function title_case(s: string): string {
     return s.replace(
         /\w\S*/g,
         txt => txt.charAt(0).toUpperCase() + txt.substr(1),
     );
 }
 
-function readable_gag_name(s) {
+function readable_gag_name(s: string): string {
     if (s.substr(-4) === "_org") {
         return (
             "Organic " +
@@ -356,7 +396,7 @@ function readable_gag_name(s) {
     return title_case(s.replace(/_/g, " "));
 }
 
-function accuracy_color(accuracy) {
+function accuracy_color(accuracy: number): string {
     if (accuracy > 0.99) {
         return "#6cf6ee";
     }

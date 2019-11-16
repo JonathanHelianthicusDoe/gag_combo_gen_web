@@ -4,7 +4,8 @@
 [![unsafe forbidden](https://img.shields.io/badge/unsafe-forbidden-success.svg)](https://github.com/rust-secure-code/safety-dance/)
 
 The front-end implementation of the gag combo generator found
-[here](https://zz.nfshost.com/). For the inner library part, see
+[here](https://zz.nfshost.com/gag_combo_gen_web/index.html). For the inner
+library part, see
 [gag\_combo\_gen](https://github.com/JonathanHelianthicusDoe/gag_combo_gen).
 
 ## Build dependencies
@@ -23,11 +24,11 @@ git clone https://github.com/JonathanHelianthicusDoe/gag_combo_gen.git
 git clone https://github.com/JonathanHelianthicusDoe/gag_combo_gen_web.git
 cd gag_combo_gen_web
 npm install
-./build.sh # Optional; the wasm binary is committed.
-           # You can pass -s as an argument to optimize for size with wasm-opt,
+./build.sh # You can pass -s as an argument to optimize for size with wasm-opt,
            # but in that case you probably also want to set opt-level="z" in
            # the Cargo.toml beforehand.
 
+# For testing
 cd test
 npm install
 npm start &

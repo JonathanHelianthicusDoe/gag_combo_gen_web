@@ -128,7 +128,7 @@ a:hover {
 }
 
 #error-div {
-    margin: 3rem;
+    margin: 2rem;
 
     display: flex;
     flex-flow: column wrap;
@@ -137,10 +137,15 @@ a:hover {
     text-align: center;
 
     font-family: monospace;
+    background-color: #46221e;
 }
 
 #error-div > * {
     padding: 1rem;
+}
+
+#error-div * {
+    font-family: monospace;
 }
 
 #foot {

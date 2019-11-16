@@ -1,6 +1,6 @@
 {
   "name": "gag_combo_gen_web",
-  "version": "0.1.4",
+  "version": "0.2.1",
   "description": "Generates optimal single-cog gag combinations given user constraints (front-end)",
   "main": "wasm/gag_combo_gen_web.wasm",
   "directories": {
@@ -27,6 +27,10 @@
   },
   "homepage": "https://github.com/JonathanHelianthicusDoe/gag_combo_gen_web#readme",
   "devDependencies": {
-    "eslint": "^6.6.0"
+    "@typescript-eslint/eslint-plugin": "^2.7.0",
+    "@typescript-eslint/parser": "^2.7.0",
+    "eslint": "^6.6.0",
+    "prettier": "^1.19.1",
+    "typescript": "^3.7.2"
   }
 }
