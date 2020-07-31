@@ -1,6 +1,6 @@
 {
   "name": "gag_combo_gen_web_server",
-  "version": "0.2.1",
+  "version": "0.2.2",
   "description": "static test server",
   "main": "index.js",
   "scripts": {
@@ -16,6 +16,6 @@
     "express": "^4.17.1"
   },
   "devDependencies": {
-    "eslint": "^6.6.0"
+    "eslint": "^7.5.0"
   }
 }

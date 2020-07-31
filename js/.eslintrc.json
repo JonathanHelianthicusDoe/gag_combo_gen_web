@@ -28,7 +28,6 @@
         "semi": "off",
         "@typescript-eslint/semi": "error",
         "@typescript-eslint/await-thenable": "warn",
-        "@typescript-eslint/ban-ts-ignore": "error",
         "@typescript-eslint/ban-types": ["error", {
             "types": {
                 "Array": "use T[] instead",
@@ -42,7 +41,6 @@
         ],
         "func-call-spacing": "off",
         "@typescript-eslint/func-call-spacing": "warn",
-        "@typescript-eslint/generic-type-naming": ["warn", "^[A-Z]$"],
         "indent": "off",
         "@typescript-eslint/indent": ["error", 4, { "SwitchCase": 1 }],
         "no-extra-parens": "off",
