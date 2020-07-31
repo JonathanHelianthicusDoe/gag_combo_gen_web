@@ -317,7 +317,7 @@ function main(instantiated: WebAssembly.WebAssemblyInstantiatedSource): void {
             gag_types_mask,
         );
 
-        const stored_combos = [];
+        const stored_combos: [number, number][] = [];
         for (let i = 0; i < k; ++i) {
             const hash = gag_combo_gen.get_combo(i);
             if (hash === 0) {

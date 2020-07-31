@@ -10,10 +10,10 @@ library part, see
 
 ## Build dependencies
 
-* `cargo` and the nightly Rust toolchain
+* `cargo` and the latest stable Rust toolchain
   ([https://rustup.rs/](https://rustup.rs/))
 * `wasm32-unknown-unknown` target support
-  (`rustup target add wasm32-unknown-unknown --toolchain nightly`)
+  (`rustup target add wasm32-unknown-unknown`)
 * `npm` ([https://www.npmjs.com/](https://www.npmjs.com/))
 * `wasm-opt` ([https://github.com/WebAssembly/binaryen][binaryen])
 

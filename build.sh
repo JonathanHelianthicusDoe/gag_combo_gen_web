@@ -3,7 +3,7 @@
 set -ex
 
 cargo update --aggressive
-cargo +nightly build --target wasm32-unknown-unknown --release
+cargo build --target wasm32-unknown-unknown --release
 
 cp ./target/wasm32-unknown-unknown/release/gag_combo_gen_web.wasm \
     ./wasm/gag_combo_gen_web.wasm
